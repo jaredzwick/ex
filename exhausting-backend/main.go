@@ -3,12 +3,21 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/danielgtaylor/huma/v2"
 	"github.com/danielgtaylor/huma/v2/adapters/humachi"
 	"github.com/danielgtaylor/huma/v2/humacli"
 	"github.com/go-chi/chi/v5"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 
 	_ "github.com/danielgtaylor/huma/v2/formats/cbor"
 )
@@ -44,6 +53,15 @@ type GreetingOutput struct {
 }
 
 func main() {
+	// Kubernetes Client Initialization
+	config, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homeDir(), ".kube", "config"))
+	if err != nil {
+		log.Fatalf("Failed to load Kubernetes config: %v", err)
+	}
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create Kubernetes client: %v", err)
+	}
 	cli := humacli.New(func(hooks humacli.Hooks, options *Options) {
 		// Create a new router & API
 		router := chi.NewMux()
@@ -74,6 +92,68 @@ func main() {
 			Tags:          []string{"Databases"},
 			DefaultStatus: http.StatusCreated,
 		}, func(ctx context.Context, i *DatabaseCreationRequest) (*DatabaseCreationResponse, error) {
+			// Define PostgreSQL Deployment
+			deployment := &appsv1.Deployment{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "postgres-instance",
+					Namespace: "default",
+				},
+				Spec: appsv1.DeploymentSpec{
+					Replicas: int32Ptr(1),
+					Selector: &metav1.LabelSelector{
+						MatchLabels: map[string]string{"app": "postgres"},
+					},
+					Template: corev1.PodTemplateSpec{
+						ObjectMeta: metav1.ObjectMeta{
+							Labels: map[string]string{"app": "postgres"},
+						},
+						Spec: corev1.PodSpec{
+							Containers: []corev1.Container{
+								{
+									Name:  "postgres",
+									Image: "postgres:15",
+									Ports: []corev1.ContainerPort{
+										{ContainerPort: 5432},
+									},
+									Env: []corev1.EnvVar{
+										{Name: "POSTGRES_USER", Value: "admin"},
+										{Name: "POSTGRES_PASSWORD", Value: "password"},
+										{Name: "POSTGRES_DB", Value: "testdb"},
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+
+			// Define PostgreSQL Service
+			service := &corev1.Service{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "postgres-service",
+					Namespace: "default",
+				},
+				Spec: corev1.ServiceSpec{
+					Selector: map[string]string{"app": "postgres"},
+					Ports: []corev1.ServicePort{
+						{Port: 5432, TargetPort: intstrPtr(5432)},
+					},
+					Type: corev1.ServiceTypeClusterIP,
+				},
+			}
+
+			// Create Deployment
+			_, err := clientset.AppsV1().Deployments("default").Create(context.TODO(), deployment, metav1.CreateOptions{})
+			if err != nil {
+				log.Printf("Error creating deployment: %v", err)
+			}
+
+			// Create Service
+			_, err = clientset.CoreV1().Services("default").Create(context.TODO(), service, metav1.CreateOptions{})
+			if err != nil {
+				log.Printf("Error creating service: %v", err)
+			}
+
 			// TODO: save review in data store.
 			resp := &DatabaseCreationResponse{}
 			resp.Body.Name = i.Body.Name
@@ -90,4 +170,20 @@ func main() {
 	// Run the CLI. When passed no commands, it starts the server.
 	cli.Run()
 
+}
+
+func homeDir() string {
+	if h := os.Getenv("HOME"); h != "" {
+		return h
+	}
+	return os.Getenv("USERPROFILE") // For Windows
+}
+
+func int32Ptr(i int32) *int32 {
+	return &i
+}
+
+func intstrPtr(i int) intstr.IntOrString {
+	v := intstr.FromInt(i)
+	return v
 }
