@@ -82,7 +82,6 @@ POST /api/v1/databases
   "name": "my-database",
   "type": "postgresql",
   "tier": "standard",
-  "region": "us-east-1"
 }
 
 # List databases
