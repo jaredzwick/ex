@@ -19,13 +19,13 @@ import { Button } from "../components/ui/button";
 export function Navbar() {
   return (
     <nav className="border-b">
-      <div className="flex h-16 items-center px-4">
+      <div className="flex h-16 items-center px-4 md:container">
         <Link to="/" className="flex items-center space-x-2">
           <HardDrive className="h-6 w-6" />
-          <span className="font-bold">Ex</span>{" "}
+          <span className="font-bold">CloudStack</span>
         </Link>
 
-        <NavigationMenu className="mx-6">
+        <NavigationMenu className="hidden md:flex mx-6">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Products</NavigationMenuTrigger>
@@ -147,9 +147,11 @@ export function Navbar() {
 
         <div className="ml-auto flex items-center space-x-4">
           <Link to="/login">
-            <Button variant="ghost">Login</Button>
+            <Button variant="ghost" className="hidden sm:inline-flex">
+              Login
+            </Button>
           </Link>
-          <Link to="/signup">
+          <Link to="/login">
             <Button>Sign Up</Button>
           </Link>
         </div>

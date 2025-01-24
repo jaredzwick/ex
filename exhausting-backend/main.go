@@ -48,6 +48,8 @@ func main() {
 			DefaultStatus: http.StatusCreated,
 		}, handlers.DatabaseCreationHandler(clientset))
 
+		// Register POST /users
+
 		// Tell the CLI how to start your server.
 		hooks.OnStart(func() {
 			fmt.Printf("Starting server on port %d...\n", options.Port)

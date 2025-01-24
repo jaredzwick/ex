@@ -28,7 +28,7 @@ export function HomePage() {
                 </p>
               </div>
               <div className="space-x-4">
-                <Link to="/signup">
+                <Link to="/login">
                   <Button size="lg">Get Started</Button>
                 </Link>
                 <Link to="/docs">
@@ -45,7 +45,7 @@ export function HomePage() {
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-3 md:grid-cols-2">
-              <Link to="/products/databases" className="group">
+              <Link to="/databases" className="group">
                 <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
                   <Database className="h-12 w-12 text-blue-500" />
                   <h3 className="text-xl font-bold">Managed Databases</h3>
@@ -59,7 +59,7 @@ export function HomePage() {
                 </div>
               </Link>
 
-              <Link to="/products/keyvalue" className="group">
+              <Link to="/keyvalue" className="group">
                 <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
                   <Key className="h-12 w-12 text-purple-500" />
                   <h3 className="text-xl font-bold">Key-Value Store</h3>
@@ -73,7 +73,7 @@ export function HomePage() {
                 </div>
               </Link>
 
-              <Link to="/products/containers" className="group">
+              <Link to="/containers" className="group">
                 <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
                   <Container className="h-12 w-12 text-green-500" />
                   <h3 className="text-xl font-bold">Container Platform</h3>
@@ -87,7 +87,7 @@ export function HomePage() {
                 </div>
               </Link>
 
-              <Link to="/products/functions" className="group">
+              <Link to="/functions" className="group">
                 <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
                   <Function className="h-12 w-12 text-orange-500" />
                   <h3 className="text-xl font-bold">Edge Functions</h3>
@@ -100,12 +100,13 @@ export function HomePage() {
                 </div>
               </Link>
 
-              <Link to="/products/storage" className="group">
+              <Link to="/storage" className="group">
                 <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
                   <HardDrive className="h-12 w-12 text-indigo-500" />
                   <h3 className="text-xl font-bold">Object Storage</h3>
                   <p className="text-center text-gray-500">
-                    Scalable object storage for all your application data.
+                    Scalable object storage for all your application objects
+                    with an S3 compatible API.
                   </p>
                   <span className="text-indigo-500 group-hover:underline">
                     Learn more →
@@ -113,7 +114,7 @@ export function HomePage() {
                 </div>
               </Link>
 
-              <Link to="/products/auth" className="group">
+              <Link to="/auth" className="group">
                 <div className="flex flex-col items-center space-y-4 p-6 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105">
                   <Shield className="h-12 w-12 text-slate-500" />
                   <h3 className="text-xl font-bold">Authentication</h3>

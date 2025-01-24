@@ -20,7 +20,7 @@ export function DatabasesLandingPage() {
                 MongoDB with enterprise-grade reliability.
               </p>
               <div className="flex gap-4">
-                <Link to="/signup">
+                <Link to="/login">
                   <Button size="lg">Start Free Trial</Button>
                 </Link>
                 <Link to="/docs/databases">
@@ -198,7 +198,7 @@ $ Ex db create my-app-db \\
               Create your first database in minutes. No credit card required.
             </p>
             <div className="flex justify-center gap-4">
-              <Link to="/signup">
+              <Link to="/login">
                 <Button size="lg" variant="secondary">
                   Start Free Trial
                 </Button>

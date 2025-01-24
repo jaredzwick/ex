@@ -19,7 +19,7 @@ export function FunctionsLandingPage() {
                 your functions closer to your users with automatic scaling.
               </p>
               <div className="flex gap-4">
-                <Link to="/signup">
+                <Link to="/login">
                   <Button size="lg">Start Free Trial</Button>
                 </Link>
                 <Link to="/docs/functions">
@@ -225,7 +225,7 @@ $ Ex fn deploy image-resize \\
               Deploy your first function in minutes. No credit card required.
             </p>
             <div className="flex justify-center gap-4">
-              <Link to="/signup">
+              <Link to="/login">
                 <Button size="lg" variant="secondary">
                   Start Free Trial
                 </Button>

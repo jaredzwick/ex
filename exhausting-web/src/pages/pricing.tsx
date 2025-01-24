@@ -637,7 +637,7 @@ export function PricingPage() {
               Start your 14-day free trial today. No credit card required.
             </p>
             <div className="flex justify-center gap-4">
-              <Link to="/signup">
+              <Link to="/login">
                 <Button size="lg" variant="secondary">
                   Start Free Trial
                 </Button>

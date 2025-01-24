@@ -19,7 +19,7 @@ export function StorageLandingPage() {
                 durability. Perfect for applications of any size.
               </p>
               <div className="flex gap-4">
-                <Link to="/signup">
+                <Link to="/login">
                   <Button size="lg">Start Free Trial</Button>
                 </Link>
                 <Link to="/docs/storage">
@@ -219,7 +219,7 @@ $ Ex storage create assets \\
               Get 10GB free storage and 50GB transfer. No credit card required.
             </p>
             <div className="flex justify-center gap-4">
-              <Link to="/signup">
+              <Link to="/login">
                 <Button size="lg" variant="secondary">
                   Start Free Trial
                 </Button>

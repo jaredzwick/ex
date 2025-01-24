@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  exhausting_postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres-exhausting-data:/var/lib/postgresql/data
+    networks:
+      - proxy-net
+
+  exhausting:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+      - ../exhausting-shared:/exhausting-shared
+      - ~/.kube/config:/root/.kube/config
+      - ~/.minikube/profiles/minikube/client.crt:${HOME}/.minikube/profiles/minikube/client.crt # Mount client cert
+      - ~/.minikube/profiles/minikube/client.key:${HOME}/.minikube/profiles/minikube/client.key # Mount client key
+      - ~/.minikube/ca.crt:${HOME}/.minikube/ca.crt # Mount CA cert
+    environment:
+      DATABASE_URL: postgres://user:password@exhausting_postgres:5432/mydatabase?sslmode=disable
+      REDIS_URL: redis:6379
+    depends_on:
+      - exhausting_postgres
+      - exhausting_redis
+    working_dir: /app
+    networks:
+      - proxy-net
+
+  exhausting_redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-exhausting-data:/data
+    networks:
+      - proxy-net
+
+volumes:
+  postgres-exhausting-data:
+  redis-exhausting-data:
+
+networks:
+  proxy-net:
