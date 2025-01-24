@@ -8,13 +8,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	shared "pypes.dev/exhausting-shared/types"
 )
-
-type CreateDatabaseRequest struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
-	Tier string `json:"tier"`
-}
 
 func main() {
 	var rootCmd = &cobra.Command{
@@ -58,10 +53,12 @@ var dbCreateCmd = &cobra.Command{
 		}
 
 		// Prepare request payload
-		requestPayload := CreateDatabaseRequest{
-			Name: name,
-			Type: dbType,
-			Tier: tier,
+		requestPayload := shared.DatabaseCreationRequest{
+			Body: shared.DatabaseCreationRequestBody{
+				Name: name,
+				Type: dbType,
+				Tier: tier,
+			},
 		}
 
 		// Send POST request

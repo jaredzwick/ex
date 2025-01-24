@@ -1,12 +1,16 @@
-module pypes.dev/exhausting
+module pypes.dev/exhausting-backend
 
 go 1.23.0
 
 toolchain go1.23.5
 
+replace pypes.dev/exhausting-shared => ../exhausting-shared
+
 require (
 	github.com/danielgtaylor/huma/v2 v2.28.0
 	github.com/go-chi/chi/v5 v5.2.0
+	k8s.io/api v0.32.1
+	pypes.dev/exhausting-shared v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -39,7 +43,6 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.32.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20241105132330-32ad38e42d3f // indirect
 	k8s.io/utils v0.0.0-20241104100929-3ea5e8cea738 // indirect
@@ -55,5 +58,5 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	k8s.io/apimachinery v0.32.1
-	k8s.io/client-go v0.32.1 // indirect
+	k8s.io/client-go v0.32.1
 )
